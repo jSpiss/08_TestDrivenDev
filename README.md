@@ -61,3 +61,49 @@ Das Framework kann mittels Maven in das Projekt integriert werden.
 ### Mockito
 
 Mockito wird für Integrationstests verwendet. Bei diesen Tests werden die einzelnen Klassen nicht autark getestet, sondern beziehen noch andere KLassen mit ein. Doch um die Unabhängigkeit des Tests zu gewährleisten, kann Mockito verwendet werden. Durch dieses Framework können Mocks, das sind Dummydaten, bereit gestellt werden und in den Test integriert werden. Durch diese Mocks werden in einem Test Daten bereit gestellt, die im normalen Programm von einer anderen Klasse/Methode aufgerufen werden.
+
+## Aufgabe 2: Ausgangsprojekt
+
+Laden Sie sich das gegebene Maven-Ausgangsprojekt („TDD Kino Demo“, siehe Moodle) herunter. Laden Sie es
+als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut ist.
+
+### pom.xml (Dependencies, Java-Version etc.)
+
+- **Java-Version** 
+```xml
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+```
+- **Dependencies**
+```xml
+
+<dependencies>
+
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+    <!-- use of this aggregator artifact makes stating individual artifacts obsolete -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.8.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.3.1</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+```
+
+### **gegebene Domänenklassen**
+
+### **Gegebene Start-Unit5-Tests**
