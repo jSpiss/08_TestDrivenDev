@@ -79,8 +79,8 @@ als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut
 
 ```
 - **Dependencies**
-```xml
 
+```xml
 <dependencies>
 
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
@@ -91,6 +91,9 @@ als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut
       <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
+```
+
+```xml
 
     <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
     <dependency>
@@ -105,5 +108,32 @@ als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut
 ```
 
 ### **gegebene Domänenklassen**
+
+ **KinoSaal**
+
+ Besitzt Datenfelder für den Namen als String und fürdie Reihen des Saals als Map, indem Key/ Value gespeichert wird.
+ Beim Konstruktor muss der Name und die Map (Character als Key, Integer als Value) mitgegeben werden.
+ Methoden der Klasse sind:
+ - getName: Rückgabe des Namen
+ - pruefePlatz: Hier wird geprüft, ob der Platz noch zur Verfügung steht.
+ - equals: Generiert ein Clon für ein gegebenes Objekt, in diesem Fall Kinosaal. Dann wird geprüft, ob das Objekt eine Instanz von KinoSaal ist. Wenn die Prüfung fehlschlägt, wird false zurück gegeben, bei korrekter Prüfung wird **this.name.equals(((KinoSaal) obj).getName());** zurückgegeben.
+
+ **KinoVerwaltung**
+
+ Datenfeld ist eine Liste von Vorstellungen.
+ - einplanenVorstellung: Hier wird geprüft, ob eine bestimmte Vorstellung in der Liste enthalten ist. Falls dies nicht der Fall ist, wird die Vorstellung der Liste hinzugefügt.
+ - getVorstellungen: Vorstellung wird zurück gegeben.
+ - kaufeTicket: Für diese Methode muss die Vorstellung, die Reihe, den Platz und das Geld angegeben werden.
+
+ **Ticket**
+
+ Datenfelder für die Klasse sind:
+ - saal: String
+ - Zeitfenster: Zeitfenster
+ - datum: LocalDate
+ - reihe: Char
+ - platz: int
+
+ - **Vorstellung**
 
 ### **Gegebene Start-Unit5-Tests**
