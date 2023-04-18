@@ -134,6 +134,53 @@ als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut
  - reihe: Char
  - platz: int
 
- - **Vorstellung**
+ Der Konstruktor braucht die Werte saal, zeitfenster, datum, reihe und platz zum Erstellen eines neuen Objekts.
+
+ Methoden der Klasse:
+
+ - getSaal(): gibt den Saal zurück
+ - getZeitfenster(): gibt das Zeitfenster zurück
+ - getDatum(): gibt das Datum zurück
+ - getReihe(): gibt die Reihe des Objekts zurück
+ - getPlatz(): gibt den Platz zurück
+
+ **Vorstellung**
+
+ Datenfelder der Klasse:
+- saal: KinoSaal
+- zeitfenster: ZeitFenster
+- datum: LocalDate
+- film: String
+- preis: float
+
+- tickets: LinkedList
+
+Der Konstruktor braucht die Werte saal, zeitfenster, datum, film und preis zum Erstellen eines neuen Objekts.
+
+Methoden der Klasse:
+
+- getFilm(): gibt den Film der Vorstellung zurück
+- getSaal(): gibt den Saal zurück
+- getZeitfenster(): gibt das Zeitfenster zurück
+- getDatum(): gibt das Datum zurück
+- kaufeTicket(): es muss rihe, platz und das Geld angegeben  werden. In dieser Methode wird überprüft, ob das Geld ausreicht, der Platz belegt ist und ob der Platz überhaupt existiert.
+
+- equals: Generiert ein Clon für ein gegebenes Objekt, in diesem Fall Vorstellung. Dann wird geprüft, ob das Objekt eine Instanz von Vorstellung ist.
+
+ **Zeitfenster**
+
+ Die KLasse Zeitfenster ist eine Enum-Klasse.
 
 ### **Gegebene Start-Unit5-Tests**
+
+- Unittest für Kinosaal.
+- Unittest für Sitzplätze des Kinosaals
+- Unittest für den Namen des Kinosaals
+
+*AppTest*
+
+![AppTest](screenis/unittest_1.png)
+
+*App*
+
+![App-Mainklasse](screenis/unittest_2.png)

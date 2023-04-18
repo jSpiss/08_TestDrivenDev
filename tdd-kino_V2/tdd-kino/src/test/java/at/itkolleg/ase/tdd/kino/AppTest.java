@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+
 /**
  * Unit test for simple App.
  */
@@ -25,6 +27,8 @@ public class AppTest {
     private KinoSaal kinosaalMock; //Mocking Stub zum Testen
 
     private KinoSaal kinosaalOriginal;
+
+    TestVorstellung testVorstellung;
 
     @BeforeEach
     void setup() {
@@ -81,4 +85,45 @@ public class AppTest {
     void testKinosaalName() {
         assertEquals("KS2", kinosaalOriginal.getName());
     }
+
+    @Test
+    void testKinosaalEquals() {
+        assertFalse(kinosaalOriginal.equals(kinosaalOriginal.getName()));
+    }
+
+    @Test
+    public void testKinoSaal()
+    {
+        TestKinoSaal testKinoSaal = new TestKinoSaal();
+        testKinoSaal.testKinosaalName();
+        testKinoSaal.testKinosaalPlätze();
+        testKinoSaal.testKinosaalEquals();
+    }
+    @Test
+    void testVorstellung()
+    {
+        testVorstellung = new TestVorstellung();
+        testVorstellung.testKaufeTicket();
+        testVorstellung.testGetSaal();
+        testVorstellung.testGetFilm();
+        testVorstellung.testGetDatum();
+        testVorstellung.testGetZeitfenster();
+        testVorstellung.testEquals();
+    }
+
+    @Test
+    void testKinoVerwaltung()
+    {
+        TestKinoverwaltung testKinoverwaltung = new TestKinoverwaltung();
+        testKinoverwaltung.testEinplanenVorstellung();
+        testKinoverwaltung.testEinplanenVorstellung_Duplicate();
+        testKinoverwaltung.testGetVorstellungen();
+        testKinoverwaltung.testKaufeTicket();
+        testKinoverwaltung.testKaufeTicket_NichtGenugGeld();
+        testKinoverwaltung.testKaufeTicket_InvaliderPlatz();
+        testKinoverwaltung.testKaufeTicket_BereitsBelegt();
+    }
+
+
+
 }
