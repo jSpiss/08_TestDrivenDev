@@ -22,7 +22,7 @@ public class TestVorstellung {
         map.put('B', 10);
         map.put('C', 15);
         this.saal = new KinoSaal("ks1", map);
-        this.testvorstellung = new Vorstellung(this.saal,Zeitfenster.ABEND, LocalDate.parse("2023-04-23"),"Super Mario Bros",10.50f);
+        this.testvorstellung = new Vorstellung(this.saal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
     }
 
     @Test
@@ -46,14 +46,19 @@ public class TestVorstellung {
     @Test
     void testGetDatum()
     {
-        assertEquals("2023-04-23", testvorstellung.getDatum());
+        assertEquals(LocalDate.of(2023, 04, 23), testvorstellung.getDatum());
     }
 
     @Test
     void testKaufeTicket()
     {
-        Ticket ticket = this.testvorstellung.kaufeTicket('A',5,12);
-        assertEquals(ticket,ticket);
+        Ticket ticket = this.testvorstellung.kaufeTicket('A', 5, 12);
+        assertNotNull(ticket);
+        assertSame(saal, ticket.getSaal());
+        assertEquals(Zeitfenster.ABEND, ticket.getZeitfenster());
+        assertEquals(LocalDate.of(2023, 4, 23), ticket.getDatum());
+        assertEquals('A', ticket.getReihe());
+        assertEquals(5, ticket.getPlatz());
     }
 
     @Test

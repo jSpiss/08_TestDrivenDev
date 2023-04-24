@@ -1,43 +1,41 @@
 package at.itkolleg.ase.tdd.kino;
 
-import org.junit.jupiter.api.BeforeEach;
+import at.itkolleg.ase.tdd.kino.KinoSaal;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class TestKinoSaal {
-    private KinoSaal kinosaal;
 
-    @BeforeEach
-    void setup() {
-        //Saal anlegen
-        Map<Character, Integer> map = new HashMap<>();
-        map.put('A', 10);
-        map.put('B', 10);
-        map.put('C', 15);
-        this.kinosaal = new KinoSaal("KS2", map);
+    @Test
+    public void testKinosaalName() {
+        String expectedName = "Saal 1";
+        Map<Character, Integer> reihen = new HashMap<>();
+        KinoSaal saal = new KinoSaal(expectedName, reihen);
+        String actualName = saal.getName();
+        assertEquals(expectedName, actualName);
     }
 
     @Test
-    void testKinosaalPlätze() {
-        assertFalse(kinosaal.pruefePlatz('A', 11));
-        assertTrue(kinosaal.pruefePlatz('A', 10));
-        assertTrue(kinosaal.pruefePlatz('B', 10));
-        assertTrue(kinosaal.pruefePlatz('C', 14));
+    public void testKinosaalPlätze() {
+        Map<Character, Integer> reihen = new HashMap<>();
+        reihen.put('A', 5);
+        reihen.put('B', 6);
+        KinoSaal saal = new KinoSaal("Saal 1", reihen);
+        assertTrue(saal.pruefePlatz('A', 3));
+        assertFalse(saal.pruefePlatz('B', 8));
+        assertFalse(saal.pruefePlatz('C', 2));
+        assertFalse(saal.pruefePlatz('A', 0));
     }
 
     @Test
-    void testKinosaalName() {
-        assertEquals("KS2", kinosaal.getName());
+    public void testKinosaalEquals() {
+        Map<Character, Integer> reihen = new HashMap<>();
+        KinoSaal saal1 = new KinoSaal("Saal 1", reihen);
+        KinoSaal saal2 = new KinoSaal("Saal 2", reihen);
+        KinoSaal saal3 = new KinoSaal("Saal 1", reihen);
+        assertEquals(saal1, saal3);
+        assertNotEquals(saal1, saal2);
     }
-
-    @Test
-    void testKinosaalEquals() {
-        assertFalse(kinosaal.equals(kinosaal.getName()));
-    }
-
 }
