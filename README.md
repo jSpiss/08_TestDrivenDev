@@ -184,3 +184,17 @@ Methoden der Klasse:
 *App*
 
 ![App-Mainklasse](screenis/unittest_2.png)
+
+## Aufgabe 10: TDD is Dead
+
+Der Diskurs über Sinn und Unsinn von TDD in der Praxis ist durchaus kontroversiell. TDD hat offensichtlich nicht
+nur Vorteile.
+Versuch über folgenden Link herauszufinden, welche Argumente Kritiker und Befürworter zum Thema TDD
+bzw. automatisiertem Testen von Code ins Treffen führen und übertrage deine Erkenntnisse in die eigene
+Praxis.
+
+*Vorteile:*
+Isolation von den verschiedenen Methoden mittles Mockdaten
+Verbessern des Codedesigns
+Besseres Vwerständnis
+*Nachteile:*

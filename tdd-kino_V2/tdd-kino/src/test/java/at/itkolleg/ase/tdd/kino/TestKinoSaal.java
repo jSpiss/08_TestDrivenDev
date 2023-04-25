@@ -1,6 +1,7 @@
 package at.itkolleg.ase.tdd.kino;
 
 import at.itkolleg.ase.tdd.kino.KinoSaal;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,24 +9,35 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestKinoSaal {
 
+    KinoSaal originalSaal;
+    Map<Character, Integer> reihen = new HashMap<>();
+    @BeforeEach
+        void setup()
+        {
+            reihen.put('A', 10);
+            reihen.put('B', 11);
+            reihen.put('C', 15);
+
+
+            originalSaal = new KinoSaal("Saal 1", reihen);
+        }
+
+
     @Test
     public void testKinosaalName() {
         String expectedName = "Saal 1";
-        Map<Character, Integer> reihen = new HashMap<>();
-        KinoSaal saal = new KinoSaal(expectedName, reihen);
-        String actualName = saal.getName();
+        String actualName = originalSaal.getName();
         assertEquals(expectedName, actualName);
     }
 
     @Test
     public void testKinosaalPlätze() {
-        Map<Character, Integer> reihen = new HashMap<>();
-        reihen.put('A', 5);
-        reihen.put('B', 6);
+
+
         KinoSaal saal = new KinoSaal("Saal 1", reihen);
         assertTrue(saal.pruefePlatz('A', 3));
-        assertFalse(saal.pruefePlatz('B', 8));
-        assertFalse(saal.pruefePlatz('C', 2));
+        assertFalse(saal.pruefePlatz('B', 18));
+        assertFalse(saal.pruefePlatz('E', 20));
         assertFalse(saal.pruefePlatz('A', 0));
     }
 

@@ -21,8 +21,8 @@ public class TestVorstellung {
         map.put('A', 10);
         map.put('B', 10);
         map.put('C', 15);
-        this.saal = new KinoSaal("ks1", map);
-        this.testvorstellung = new Vorstellung(this.saal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
+        saal = new KinoSaal("ks1", map);
+        testvorstellung = new Vorstellung(this.saal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
     }
 
     @Test
@@ -52,9 +52,9 @@ public class TestVorstellung {
     @Test
     void testKaufeTicket()
     {
-        Ticket ticket = this.testvorstellung.kaufeTicket('A', 5, 12);
+        Ticket ticket = testvorstellung.kaufeTicket('A', 5, 12);
         assertNotNull(ticket);
-        assertSame(saal, ticket.getSaal());
+        assertEquals(saal.getName(), ticket.getSaal());
         assertEquals(Zeitfenster.ABEND, ticket.getZeitfenster());
         assertEquals(LocalDate.of(2023, 4, 23), ticket.getDatum());
         assertEquals('A', ticket.getReihe());

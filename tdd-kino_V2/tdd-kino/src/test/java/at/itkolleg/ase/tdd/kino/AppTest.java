@@ -111,19 +111,5 @@ public class AppTest {
         testVorstellung.testEquals();
     }
 
-    @Test
-    void testKinoVerwaltung()
-    {
-        TestKinoverwaltung testKinoverwaltung = new TestKinoverwaltung();
-        testKinoverwaltung.testEinplanenVorstellung();
-        testKinoverwaltung.testEinplanenVorstellung_Duplicate();
-        testKinoverwaltung.testGetVorstellungen();
-        testKinoverwaltung.testKaufeTicket();
-        testKinoverwaltung.testKaufeTicket_NichtGenugGeld();
-        testKinoverwaltung.testKaufeTicket_InvaliderPlatz();
-        testKinoverwaltung.testKaufeTicket_BereitsBelegt();
-    }
-
-
 
 }
