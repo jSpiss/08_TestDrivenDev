@@ -509,8 +509,46 @@ Validierungen ausgeführt werden.
 ```
 - Schreiben Sie einen Test, der sicherstellt, dass ein Fehler geworfen wird, wenn eine Veranstaltung
 doppelt eingeplant wird.
+
+```java
+  @Test(expected = IllegalArgumentException.class)
+    public void testDoppelteVorstellung()
+    {
+        kino1.einplanenVorstellung(vorstellung1);
+        kino1.einplanenVorstellung(vorstellung1);
+    }
+```
 - Schreiben Sie einen parametrisierten Test, der mehrere Ticketkäufe mit unterschiedlichen Parametern
 überprüft.
+
+```java
+ @Test
+    public void testKaufeTicket() {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('A', 10);
+        map.put('B', 10);
+        map.put('C', 15);
+
+        KinoSaal kinosaal = new KinoSaal("Saal 1",map);
+        KinoVerwaltung kino = new KinoVerwaltung();
+        Vorstellung vorstellung =new Vorstellung(kinosaal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
+        kino.einplanenVorstellung(vorstellung);
+        Ticket ticket1 = kino.kaufeTicket(vorstellung, 'A', 5, 10.50f);
+        Ticket ticket2 = kino.kaufeTicket(vorstellung, 'A', 6, 10.50f);
+        Ticket ticket3 = kino.kaufeTicket(vorstellung, 'B', 5, 10.50f);
+
+        assertNotNull(ticket1);
+        assertNotNull(ticket2);
+        assertNotNull(ticket3);
+        assertEquals('A', ticket1.getReihe());
+        assertEquals(5, ticket1.getPlatz());
+        assertEquals('A', ticket2.getReihe());
+        assertEquals(6, ticket2.getPlatz());
+        assertEquals('B', ticket3.getReihe());
+        assertEquals(5, ticket3.getPlatz());
+
+    }
+```
 - Schreiben Sie eine dynamische TestFactory die den Ticketkauf mit zufälligen Werten bombardiert. Der
 Test soll sicherstellen, dass der Ticketkauf entweder funktioniert oder nur einen der definierten
 Fehlermeldungen (z.B. new IllegalArgumentException("Nicht ausreichend Geld.")) ausgibt. Die Tests
@@ -521,11 +559,164 @@ müssen reproduzierbar sein.
 Lesen Sie sich in das Mocking-Framework Mockito ein (Links siehe Moodle im Abschitt „Input zu Mockito“).
 Verwenden Sie die wesentlichen Mockito-Möglichkeiten praktisch in kleinen Programmen.
 
-[1]: /GameVerwaltung/
+```java
+package at.itkolleg;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class TestManualMock {
+
+    private Console c1;
+    private Game g1;
+
+    @BeforeEach
+    void setup()
+    {
+        c1 = mock(PlayStation5.class);
+        g1 = new Game("The Witcher 3: Wild Hunt","CD Project Red",c1,false);
+    }
+
+    @Test
+    void testMock()
+    {
+        when(c1.getModell()).thenReturn("5");
+        assertEquals("5",g1.getConsole().getModell());
+    }
+}
+
+```
+
+```java
+package at.itkolleg;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class TestMockAnnotation {
+    @Mock
+    private Console c1;
+    private Game g1;
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    void setup()
+    {
+        closeable = MockitoAnnotations.openMocks(this);
+        g1 = new Game("The Witcher 3: Wild Hunt","CD Project Red",c1,false);
+    }
+
+    @AfterEach
+    void close() throws Exception
+    {
+        closeable.close();
+    }
+
+    @Test
+    void testMock()
+    {
+        when(c1.getModell()).thenReturn("5");
+        assertEquals("5",g1.getConsole().getModell());
+    }
+}
+
+```
+
+```java
+package at.itkolleg;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class TestInjectMocks {
+    @Mock
+    private Console c1;
+    private AutoCloseable closeable;
+    @InjectMocks
+    private Game g1 =new Game("The Witcher 3: Wild Hunt","CD Project Red",c1,false);
+
+
+    @BeforeEach
+    void setup()
+    {
+        closeable = MockitoAnnotations.openMocks(this);
+
+    }
+
+    @AfterEach
+    void close() throws Exception
+    {
+        closeable.close();
+    }
+
+    @Test
+    void testMock()
+    {
+        when(c1.getModell()).thenReturn("5");
+        assertEquals("5",g1.getConsole().getModell());
+    }
+}
+
+```
+
+```java
+package at.itkolleg;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class TestJunit5Mock {
+    @Mock
+    private Console c1;
+    @InjectMocks
+    private Game g1 =new Game("The Witcher 3: Wild Hunt","CD Project Red",c1,false);
+
+
+
+
+    @Test
+    void testMock()
+    {
+        when(c1.getModell()).thenReturn("5");
+        assertEquals("5",g1.getConsole().getModell());
+    }
+}
+
+```
 
 ## AUFGABE 9: SELENIUM EINFÜHRUNG
 
-Lesen Sie sich in das Browser-Testframework Selenium ein (Links siehe Moodle im Abschitt „Input zu
+Lesen Sie sich in das Browser-Testframework Selenium ein (Links siehe Moodle im Abschnitt „Input zu
 Selenium“).
 Verwenden Sie das gegebene Beispiel und das Tutorial „Guide to Selenium with JUnit / TestNG“ um die
 Möglichkeiten von Selenium praktisch auszuprobieren.
