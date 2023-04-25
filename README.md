@@ -62,7 +62,7 @@ Das Framework kann mittels Maven in das Projekt integriert werden.
 
 Mockito wird für Integrationstests verwendet. Bei diesen Tests werden die einzelnen Klassen nicht autark getestet, sondern beziehen noch andere KLassen mit ein. Doch um die Unabhängigkeit des Tests zu gewährleisten, kann Mockito verwendet werden. Durch dieses Framework können Mocks, das sind Dummydaten, bereit gestellt werden und in den Test integriert werden. Durch diese Mocks werden in einem Test Daten bereit gestellt, die im normalen Programm von einer anderen Klasse/Methode aufgerufen werden.
 
-## Aufgabe 2: Ausgangsprojekt
+## AUFGABE 2: AUSGANGSPROJEKT
 
 Laden Sie sich das gegebene Maven-Ausgangsprojekt („TDD Kino Demo“, siehe Moodle) herunter. Laden Sie es
 als Maven-Projekt in ihre IDE und schauen Sie sich an, wie das Projekt aufgebaut ist.
@@ -185,7 +185,317 @@ Methoden der Klasse:
 
 ![App-Mainklasse](screenis/unittest_2.png)
 
-## Aufgabe 10: TDD is Dead
+## AUFGABE 3: EINARBEITUNG IN DEN GEGEBENEN CODE
+
+Arbeiten Sie sich in den gegebenen Code zur Kinoverwaltung ein. Verwenden Sie die gegebenen Klassen
+KinoSaal, Ticket, Vorstellung, Kinoverwaltung in der App-Klasse (main-Methode), um ein Gefühl für die
+Funktionsweise des Programms zu bekommen. Führen Sie folgende Punkte durch:
+
+- Kinosäle anlegen
+- Vorstellungen anlegen
+- Vorstellungen über die Kinoverwaltung einplanen
+- Tickets für Vorstellungen ausgeben
+- etc.
+
+```java
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+        //Saal anlegen
+
+        Map<Character,Integer> mapks1 = new HashMap<>();
+        mapks1.put('A',15);
+        mapks1.put('B',15);
+        mapks1.put('C',15);
+        mapks1.put('D',15);
+        mapks1.put('E',15);
+        mapks1.put('F',15);
+
+        Map<Character,Integer> mapks2 = new HashMap<>();
+        mapks1.put('A',10);
+        mapks1.put('B',10);
+        mapks1.put('C',15);
+        mapks1.put('D',15);
+        mapks1.put('E',15);
+
+        Map<Character,Integer> mapks3 = new HashMap<>();
+        mapks1.put('A',10);
+        mapks1.put('B',10);
+        mapks1.put('C',10);
+        mapks1.put('D',10);
+        mapks1.put('E',10);
+
+
+        KinoSaal ks1 = new KinoSaal("Big Theatre",mapks1);
+        KinoSaal ks2 = new KinoSaal("Theatre Mittleton", mapks2);
+        KinoSaal ks3 = new KinoSaal("TinyT", mapks3);
+
+        // Vorstellungen anlegen
+
+        Vorstellung vs1 = new Vorstellung(ks1,Zeitfenster.ABEND, LocalDate.parse("2023-04-16"),"Super Mario Film", 15);
+        Vorstellung vs2 = new Vorstellung(ks2, Zeitfenster.NACHT,LocalDate.parse("2023-04-23"),"Dungeons & Dragons", 10);
+        Vorstellung vs3 = new Vorstellung(ks3,Zeitfenster.NACHMITTAG,LocalDate.parse("2023-05-02"), "Die drei ???",11);
+
+        // Vorstellungen über Kinoverwaltung einplanen
+
+        KinoVerwaltung kv1 = new KinoVerwaltung();
+        kv1.einplanenVorstellung(vs1);
+        kv1.einplanenVorstellung(vs2);
+        kv1.einplanenVorstellung(vs3);
+
+        // Tickets für Vorstellungen ausgeben
+
+        kv1.kaufeTicket(vs1,'E',5,20);
+        kv1.kaufeTicket(vs1,'C',10,15);
+
+        //...
+
+    }
+}
+
+
+```
+
+## AUFGABE 4: JUNIT-TESTS FÜR KINOSAAL
+
+Testen Sie alle Methoden der Klasse KinoSaal (Testklasse TestKinoSaal).
+
+```java
+
+package at.itkolleg.ase.tdd.kino;
+
+import at.itkolleg.ase.tdd.kino.KinoSaal;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.util.HashMap;
+import java.util.Map;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestKinoSaal {
+
+    KinoSaal originalSaal;
+    Map<Character, Integer> reihen = new HashMap<>();
+    @BeforeEach
+        void setup()
+        {
+            reihen.put('A', 10);
+            reihen.put('B', 11);
+            reihen.put('C', 15);
+
+
+            originalSaal = new KinoSaal("Saal 1", reihen);
+        }
+
+
+    @Test
+    public void testKinosaalName() {
+        String expectedName = "Saal 1";
+        String actualName = originalSaal.getName();
+        assertEquals(expectedName, actualName);
+    }
+
+    @Test
+    public void testKinosaalPlätze() {
+
+
+        KinoSaal saal = new KinoSaal("Saal 1", reihen);
+        assertTrue(saal.pruefePlatz('A', 3));
+        assertFalse(saal.pruefePlatz('B', 18));
+        assertFalse(saal.pruefePlatz('E', 20));
+        assertFalse(saal.pruefePlatz('A', 0));
+    }
+
+    @Test
+    public void testKinosaalEquals() {
+        Map<Character, Integer> reihen = new HashMap<>();
+        KinoSaal saal1 = new KinoSaal("Saal 1", reihen);
+        KinoSaal saal2 = new KinoSaal("Saal 2", reihen);
+        KinoSaal saal3 = new KinoSaal("Saal 1", reihen);
+        assertEquals(saal1, saal3);
+        assertNotEquals(saal1, saal2);
+    }
+}
+
+
+```
+
+## AUFGABE 5: JUNIT-TESTS FÜR VORSTELLUNG
+
+Testen Sie alle Methoden der Klasse Vorstellung (Testklasse TestVorstellung).
+
+```java
+
+package at.itkolleg.ase.tdd.kino;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestVorstellung {
+
+    private Vorstellung testvorstellung;
+    private KinoSaal saal;
+
+    @BeforeEach
+    void setup() {
+        //Saal anlegen
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('A', 10);
+        map.put('B', 10);
+        map.put('C', 15);
+        saal = new KinoSaal("ks1", map);
+        testvorstellung = new Vorstellung(this.saal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
+    }
+
+    @Test
+    void testGetFilm()
+    {
+        assertEquals("Super Mario Bros", testvorstellung.getFilm());
+    }
+
+    @Test
+    void testGetSaal()
+    {
+        assertEquals("ks1", testvorstellung.getSaal().getName());
+    }
+
+    @Test
+    void testGetZeitfenster()
+    {
+        assertEquals(Zeitfenster.ABEND, testvorstellung.getZeitfenster());
+    }
+
+    @Test
+    void testGetDatum()
+    {
+        assertEquals(LocalDate.of(2023, 04, 23), testvorstellung.getDatum());
+    }
+
+    @Test
+    void testKaufeTicket()
+    {
+        Ticket ticket = testvorstellung.kaufeTicket('A', 5, 12);
+        assertNotNull(ticket);
+        assertEquals(saal.getName(), ticket.getSaal());
+        assertEquals(Zeitfenster.ABEND, ticket.getZeitfenster());
+        assertEquals(LocalDate.of(2023, 4, 23), ticket.getDatum());
+        assertEquals('A', ticket.getReihe());
+        assertEquals(5, ticket.getPlatz());
+    }
+
+    @Test
+    void testEquals()
+    {
+        assertFalse(testvorstellung.equals(testvorstellung.getSaal()));
+    }
+
+}
+
+
+```
+
+## AUFGABE 6: JUNIT-TESTS FÜR KINOVERWALTUNG
+
+Testen Sie alle Methoden der Klasse KinoVerwaltung (Testklasse TestKinoverwaltung).
+
+```java
+
+package at.itkolleg.ase.tdd.kino;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+
+public class TestKinoverwaltung {
+
+    KinoVerwaltung kino = new KinoVerwaltung();
+    Map<Character, Integer> map = new HashMap<>();
+    KinoSaal saal;
+    Vorstellung vorstellung;
+    @BeforeEach
+    void setup() {
+        //Saal anlegen
+
+        map.put('A', 10);
+        map.put('B', 10);
+        map.put('C', 15);
+
+        saal = new KinoSaal("Saal 1",map);
+        vorstellung =new Vorstellung(saal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
+
+    }
+    @Test
+    public void testEinplanenVorstellung() {
+
+        kino.einplanenVorstellung(vorstellung);
+        assertEquals(1, kino.getVorstellungen().size());
+        assertThrows(IllegalArgumentException.class, () -> kino.einplanenVorstellung(vorstellung));
+    }
+
+    @Test
+    public void testKaufeTicket() {
+        KinoVerwaltung kino = new KinoVerwaltung();
+        kino.einplanenVorstellung(vorstellung);
+        Ticket ticket = kino.kaufeTicket(vorstellung, 'A', 5, 10.0f);
+        assertNotNull(ticket);
+        assertEquals('A', ticket.getReihe());
+        assertEquals(5, ticket.getPlatz());
+
+    }
+
+}
+
+
+```
+## AUFGABE 7: JUNIT-TESTS ADVANCED
+
+Falls nicht schon in den vorhergehenden Aufgaben passiert, testen Sie folgende Punkte unter Verwendung der
+fortgeschrittenen Features von JUNIT 5:
+
+- Schreiben Sie einen Test, der validiert, dass das Anlegen einer Vorstellung korrekt funktioniert. Der
+-Test sollte eine fachliche Bezeichnung haben und die Assertions sollten bei Validierungsfehler eine
+Hinweistext liefern.
+- Schreiben Sie einen Test, der validiert, dass das Einplanen mehrerer Vorstellungen korrekt
+funktioniert. Stellen Sie zudem sicher, dass beim möglichen Auftreten eines Fehlers trotzdem alle
+Validierungen ausgeführt werden.
+- Schreiben Sie einen Test, der sicherstellt, dass ein Fehler geworfen wird, wenn eine Veranstaltung
+doppelt eingeplant wird.
+- Schreiben Sie einen parametrisierten Test, der mehrere Ticketkäufe mit unterschiedlichen Parametern
+überprüft.
+- Schreiben Sie eine dynamische TestFactory die den Ticketkauf mit zufälligen Werten bombardiert. Der
+Test soll sicherstellen, dass der Ticketkauf entweder funktioniert oder nur einen der definierten
+Fehlermeldungen (z.B. new IllegalArgumentException("Nicht ausreichend Geld.")) ausgibt. Die Tests
+müssen reproduzierbar sein.
+
+## AUFGABE 8: MOCKITO EINFÜHRUNG
+
+Lesen Sie sich in das Mocking-Framework Mockito ein (Links siehe Moodle im Abschitt „Input zu Mockito“).
+Verwenden Sie die wesentlichen Mockito-Möglichkeiten praktisch in kleinen Programmen.
+
+## AUFGABE 9: SELENIUM EINFÜHRUNG
+
+Lesen Sie sich in das Browser-Testframework Selenium ein (Links siehe Moodle im Abschitt „Input zu
+Selenium“).
+Verwenden Sie das gegebene Beispiel und das Tutorial „Guide to Selenium with JUnit / TestNG“ um die
+Möglichkeiten von Selenium praktisch auszuprobieren.
+
+## Aufgabe 10: TDD IS DEAD
 
 Der Diskurs über Sinn und Unsinn von TDD in der Praxis ist durchaus kontroversiell. TDD hat offensichtlich nicht
 nur Vorteile.
@@ -194,7 +504,18 @@ bzw. automatisiertem Testen von Code ins Treffen führen und übertrage deine Er
 Praxis.
 
 *Vorteile:*
-Isolation von den verschiedenen Methoden mittles Mockdaten
-Verbessern des Codedesigns
-Besseres Vwerständnis
+- Isolation von den verschiedenen Methoden mittles Mockdaten
+- Verbessern des Codedesigns, niedere Kopplung - hohe Kohäsion erforderlich
+- Besseres Verständnis des Codes
+- Testabdeckung von 100%
+- Red-Green-Faktor:Test schreiben, Methode schreiben, aufräumen.
+
 *Nachteile:*
+- Wenn man den Aufbau einer Methode nicht weiß, ist ein vorhergehender Test nicht zweckmäßig
+- Bei einer Änderung einer Funktion können mehrere Tests wieder angepasst werden.
+- Durch die Mocks  kann es passieren, dass der Fokus auf die Testung der Schnittstellen vergessen wird.
+- Es muss sehr diszipliniert gearbeitet werden, ansonsten falscher Ansatz
+- Faith in the Test -> die Hoffnung, dass der Test funktioniert, jedoch sich nicht auf den Code konzentriert.
+
+Meiner Meinung nach ist das TDD ein sinnvolles Tool, um die Sauberkeit des eigenen Codes verbessern zu können, um seinen Code besser zu verstehen (wieso funktioniert der Test nicht, bzw. wieso funktioniert der Test) und ein besseres Gefühl gibt, da man den Code selber analysiert und hinterfragt.
+Jedoch braucht man sehr viel Disziplin, die man sich am Anfang schon sehr einprägen sollte. Eine zeitliche Disziplin, da die Erstellung der Test einige Zeit in Anspruch nimmt. Auch eine Disziplin des Lernens, um einen sinnvollen Test erstellen zu können.Auch die Disziplin einen erstellten Code zu verwerfen, wenn dieser nicht funktoniert.

@@ -67,4 +67,17 @@ public class TestVorstellung {
         assertFalse(testvorstellung.equals(testvorstellung.getSaal()));
     }
 
+    @Test
+    void testVorstellungErstellen()
+    {
+        assertDoesNotThrow(()-> {
+            assertEquals("ks1", testvorstellung.getSaal().getName());
+            assertEquals(Zeitfenster.ABEND, testvorstellung.getZeitfenster());
+            assertEquals(LocalDate.of(2023, 4, 23), testvorstellung.getDatum());
+            assertEquals("Super Mario Bros", testvorstellung.getFilm());
+            assertEquals(10.50f, testvorstellung.getPreis());
+        }, "FEHLER: Vorstellung kann nicht angelegt werden!");
+
+
+    }
 }
