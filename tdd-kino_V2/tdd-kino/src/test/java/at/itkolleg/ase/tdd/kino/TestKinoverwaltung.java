@@ -51,13 +51,36 @@ public class TestKinoverwaltung {
 
     @Test
     public void testKaufeTicket() {
-        KinoVerwaltung kino = new KinoVerwaltung();
-        kino.einplanenVorstellung(vorstellung1);
-        Ticket ticket = kino.kaufeTicket(vorstellung1, 'A', 5, 10.0f);
-        assertNotNull(ticket);
-        assertEquals('A', ticket.getReihe());
-        assertEquals(5, ticket.getPlatz());
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('A', 10);
+        map.put('B', 10);
+        map.put('C', 15);
 
+        KinoSaal kinosaal = new KinoSaal("Saal 1",map);
+        KinoVerwaltung kino = new KinoVerwaltung();
+        Vorstellung vorstellung =new Vorstellung(kinosaal,Zeitfenster.ABEND, LocalDate.of(2023, 4, 23),"Super Mario Bros",10.50f);
+        kino.einplanenVorstellung(vorstellung);
+        Ticket ticket1 = kino.kaufeTicket(vorstellung, 'A', 5, 10.50f);
+        Ticket ticket2 = kino.kaufeTicket(vorstellung, 'A', 6, 10.50f);
+        Ticket ticket3 = kino.kaufeTicket(vorstellung, 'B', 5, 10.50f);
+
+        assertNotNull(ticket1);
+        assertNotNull(ticket2);
+        assertNotNull(ticket3);
+        assertEquals('A', ticket1.getReihe());
+        assertEquals(5, ticket1.getPlatz());
+        assertEquals('A', ticket2.getReihe());
+        assertEquals(6, ticket2.getPlatz());
+        assertEquals('B', ticket3.getReihe());
+        assertEquals(5, ticket3.getPlatz());
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDoppelteVorstellung()
+    {
+        kino1.einplanenVorstellung(vorstellung1);
+        kino1.einplanenVorstellung(vorstellung1);
     }
 
 }
