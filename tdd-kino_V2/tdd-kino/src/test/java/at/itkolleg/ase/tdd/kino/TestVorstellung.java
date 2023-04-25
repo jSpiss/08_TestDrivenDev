@@ -77,7 +77,6 @@ public class TestVorstellung {
             assertEquals("Super Mario Bros", testvorstellung.getFilm());
             assertEquals(10.50f, testvorstellung.getPreis());
         }, "FEHLER: Vorstellung kann nicht angelegt werden!");
-
-
     }
+
 }

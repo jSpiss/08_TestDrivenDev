@@ -469,11 +469,44 @@ Falls nicht schon in den vorhergehenden Aufgaben passiert, testen Sie folgende P
 fortgeschrittenen Features von JUNIT 5:
 
 - Schreiben Sie einen Test, der validiert, dass das Anlegen einer Vorstellung korrekt funktioniert. Der
--Test sollte eine fachliche Bezeichnung haben und die Assertions sollten bei Validierungsfehler eine
+Test sollte eine fachliche Bezeichnung haben und die Assertions sollten bei Validierungsfehler eine
 Hinweistext liefern.
+
+```java
+  @Test
+    void testVorstellungErstellen()
+    {
+        assertDoesNotThrow(()-> {
+            assertEquals("ks1", testvorstellung.getSaal().getName());
+            assertEquals(Zeitfenster.ABEND, testvorstellung.getZeitfenster());
+            assertEquals(LocalDate.of(2023, 4, 23), testvorstellung.getDatum());
+            assertEquals("Super Mario Bros", testvorstellung.getFilm());
+            assertEquals(10.50f, testvorstellung.getPreis());
+        }, "FEHLER: Vorstellung kann nicht angelegt werden!");
+    }
+
+```
+
 - Schreiben Sie einen Test, der validiert, dass das Einplanen mehrerer Vorstellungen korrekt
 funktioniert. Stellen Sie zudem sicher, dass beim möglichen Auftreten eines Fehlers trotzdem alle
 Validierungen ausgeführt werden.
+
+```java
+ @Test
+    public void testEinplanenVorstellung() {
+
+        kino1.einplanenVorstellung(vorstellung1);
+        kino2.einplanenVorstellung(vorstellung2);
+
+        assertEquals(1, kino1.getVorstellungen().size());
+        assertEquals(1, kino2.getVorstellungen().size());
+
+        assertThrows(IllegalArgumentException.class, () -> kino1.einplanenVorstellung(vorstellung1));
+        assertThrows(IllegalArgumentException.class, () -> kino2.einplanenVorstellung(vorstellung2));
+
+    }
+
+```
 - Schreiben Sie einen Test, der sicherstellt, dass ein Fehler geworfen wird, wenn eine Veranstaltung
 doppelt eingeplant wird.
 - Schreiben Sie einen parametrisierten Test, der mehrere Ticketkäufe mit unterschiedlichen Parametern
@@ -487,6 +520,8 @@ müssen reproduzierbar sein.
 
 Lesen Sie sich in das Mocking-Framework Mockito ein (Links siehe Moodle im Abschitt „Input zu Mockito“).
 Verwenden Sie die wesentlichen Mockito-Möglichkeiten praktisch in kleinen Programmen.
+
+[1]: /GameVerwaltung/
 
 ## AUFGABE 9: SELENIUM EINFÜHRUNG
 
